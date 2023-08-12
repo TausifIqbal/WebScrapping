@@ -1,0 +1,5 @@
+# Define the test job
+test_job:
+    stage: test
+    script:
+      - echo "Running tests..."
