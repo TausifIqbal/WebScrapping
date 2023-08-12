@@ -30,4 +30,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REPOSITORY_NAME: ${{ github.repository	}}
         REPOSITORY_BRANCH: ${{ github.head_ref	}}
-      run: python3 .github/srcipt/slack_notify.py
+      run: python3 .github/script/slack_notify.py
