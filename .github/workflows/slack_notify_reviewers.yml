@@ -1,0 +1,33 @@
+name: Slack notify reviewers
+on:
+ pull_request:
+  types: [ready_for_review, opened, closed]
+  branches: [ "main", "master"]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install python library requirements
+      run: pip3 install requests
+    - name: Get PR Number
+      run: |
+        NUMBER=$(jq -e '.number|select( . != null )' ${GITHUB_EVENT_PATH}||jq -e .comment.issue_url ${GITHUB_EVENT_PATH}|sed 's/"$//'|awk -F'/' '{print $8}')
+        echo "pr_number=${NUMBER}" >> $GITHUB_ENV
+    - name: gather list of reviewers
+      run: |
+       REVIEWERS=$(jq -r -c '.pull_request.requested_reviewers[].login' ${GITHUB_EVENT_PATH}|tr -s '\n' ','|sed 's/,$//g')
+       echo "pr_reviewers=${REVIEWERS}" >> $GITHUB_ENV
+    - name: call Slack with reviewers
+      env:
+        PR: ${{ env.pr_number }}
+        PR_LINK: "https://github.com/TausifIqbal/WebScrapping/pull/${{ env.pr_number }}"
+        PR_REVIEWERS: ${{ env.pr_reviewers }}
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPOSITORY_NAME: ${{ github.repository	}}
+        REPOSITORY_BRANCH: ${{ github.head_ref	}}
+      run: python3 .github/srcipt/slack_notify.py
