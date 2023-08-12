@@ -1,5 +1,14 @@
-# Define the test job
-test_job:
-    stage: test
-    script:
-      - echo "Running tests..."
+name: Snapshot
+
+on:
+  workflow_call:
+    outputs:
+      get_version:
+        description: "Build version from gradle file"
+        value: ${{ jobs.get-version.outputs.get-version-output }}
+
+jobs:
+  get-version:
+    runs-on: ubuntu-22.04
+    outputs:
+      get-version-output: ${{ steps.version.outputs.get_version }}
