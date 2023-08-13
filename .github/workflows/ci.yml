@@ -1,0 +1,18 @@
+name: Snapshot
+
+on:
+  workflow_call:
+    outputs:
+      get_version:
+        description: "Build version from gradle file"
+        value: ${{ jobs.get-version.outputs.get-version-output }}
+
+jobs:
+  get-version:
+    runs-on: ubuntu-22.04
+    outputs:
+      get-version-output: ${{ steps.set-output.outputs.get-version-output }}
+    steps:
+        - name: Set Output
+          id: set-output
+          run: echo "::set-output name=get-version-output::1.0.0"
