@@ -4,3 +4,5 @@ Web scraping (or data scraping) is a technique used to collect content and data 
 
 # What is web scraping used for?
 Web scraping has countless applications, especially within the field of data analytics. Market research companies use scrapers to pull data from social media or online forums for things like customer sentiment analysis. Others scrape data from product sites like Amazon or eBay to support competitor analysis.
+
+# Adding counter
