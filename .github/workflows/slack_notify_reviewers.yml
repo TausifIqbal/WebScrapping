@@ -31,3 +31,8 @@ jobs:
         REPOSITORY_NAME: ${{ github.repository	}}
         REPOSITORY_BRANCH: ${{ github.head_ref	}}
       run: python3 .github/script/slack_notify.py
+    - name: Step 1 - Echo out a GitHub Actions Secret to the logs
+      run: |
+        echo "The GitHub Action Secret will be masked:  "
+        echo ${{ secrets.SLACK_WEBHOOK }}
+      
